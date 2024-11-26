@@ -6,26 +6,29 @@ def menu():
 .......................................................
                  Agenda de Contatos 
 Menu
-[1] Cadastrar Contato
-[2] Listar Contato
-[3] Deletar Contato                                 
-[4] Buscar Contato
-[5] Sair
+[1] Cadastrar Contato.
+[2] Listar Contato.
+[3] Deletar Contato.                                 
+[4] Buscar Contato.
+[5] Sair.
 .......................................................                   
 Escolha uma opção acima: ''')
-    if opcao == "1":
-       cadastrarContato()
-    elif opcao == "2":
-       listarContato()
-    elif opcao == "3":
-       deletarContato() 
-    elif opcao == '4':
-       buscarContato()  
-    else:
-        sair()  
+    while opcao != "5":
+        if opcao == "1":
+            cadastrarContato()
+        elif opcao == "2":
+            listarContato()
+        elif opcao == "3":
+            deletarContato() 
+        elif opcao == '4':
+            buscarContato()  
+        elif opcao =='5':
+            sair()
+        else:
+            print ("Erro!") 
 
 def cadastrarContato(): 
-    f = datetime.datetime.now() + datetime.timedelta(seconds=15)
+    cadastrado=False
     identificacao = input("Escolha a identificação do contato: ")
     nome = input ("Informe o nome do contato: ")
     telefone = input ("Informe o número de telefone do contato: ")
@@ -36,17 +39,25 @@ def cadastrarContato():
         agenda.write(dados)
         agenda.close()
         print(f'Contato gravado com sucesso!!')
-        #kit.sendwhatmsg("+55{telefone.replace("-","").replace(" ","")}", "Olá {nome}, seja bem-vindo na minha lista de contato. =D", f.hour, f.minute,15,True,3)
-        #kit.sendwhatmsg("+5515997863013", "oiiiii",  f.hour, f.minute,15,True,31) 
+        cadastrado=True     
     except:
         print('ERRO!! Contato NÃO gravado.')    
+    if cadastrado:
+        f = datetime.datetime.now() + datetime.timedelta(seconds=61)
+        kit.sendwhatmsg(f"+55{telefone.replace("-","").replace(" ","")}", f"Olá {nome}, seja bem-vindo na minha lista de contato. =D", f.hour, f.minute,15,True,3)
 
 def listarContato():
     agenda = open ("agenda.txt", "r")
     for contato in agenda:
         print(contato)
     agenda.close()
-    
+
+def organizarLista(): 
+    with open('agenda.txt', 'r') as agenda:
+        antes_de_organizar = agenda.readlines()
+        contato_organizados = sorted(antes_de_organizar, key=lambda x: x.split(";"[0]))
+        print(contato_organizados)
+
 def deletarContato():
     nomeDeletado = input("Informe o nome para deletar o contato: ")
     agenda = open ("agenda.txt", "r")
