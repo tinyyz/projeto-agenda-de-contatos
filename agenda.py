@@ -47,6 +47,7 @@ def cadastrarContato():
         agenda = open("agenda.txt", "a")
         dados = f'{identificacao.upper()}; {nome.upper()}; {telefone}; {email} \n'
         agenda.write(dados)
+
         agenda.close()
         print(f'Contato gravado com sucesso!!')
         msg=input('''\nDeseja mandar uma saudação nesse número?\nDigite 'S' para SIM.\nDigite 'N' para NÃO.\n:''').upper()[0]
@@ -60,10 +61,11 @@ def cadastrarContato():
 
 
 def listarContato():
-    agenda = open ("agenda.txt", "r")
-    for contato in agenda:
-        print(contato)
-    agenda.close()
+    with open('agenda.txt', 'r') as f:
+        results = [[str(entry) for entry in line.split()] for line in f.readlines()]
+        results.sort()
+    for itens in results:
+        print(itens)
 
 def organizarLista(): 
     with open('agenda.txt', 'r') as agenda:
